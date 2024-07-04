@@ -35,6 +35,17 @@ if (cookie1Exists || cookie2Exists) {
   sessionStorage.setItem("logBoolean_c", "N");
 }
 console.log(`로그인 상태 - ${sessionStorage.getItem("logBoolean_c")}`);
+
+if (cookie1Exists) {
+  sessionStorage.setItem("auto_login", "Y");
+} else if (!cookie1Exists) {
+  sessionStorage.setItem("auto_login", "N");
+}
+if (cookie2Exists) {
+  sessionStorage.setItem("normal_login", "Y");
+} else if (!cookie2Exists) {
+  sessionStorage.setItem("normal_login", "N");
+}
 // SalesforceInteractions.sendEvent({
 //     user: { attributes: { logBoolean_c: sessionStorage.getItem("logBoolean_c") } },
 // });
@@ -359,6 +370,12 @@ if (allowedDomains.includes(domain)) {
     } else {
       sessionStorage.setItem("seriesTag", null);
     }
+
+    if (SalesforceInteractions.cashDom(".tag-item").length > 0) {
+      const tagItem = SalesforceInteractions.cashDom(".tag-item").text();
+      sessionStorage.setItem("tagItem", tagItem);
+    }
+
     const cateOfCatePage = () => {
       // if (window.location.host === 'm.chosunhnb.com') {
       //     SalesforceInteractions.DisplayUtils.pageElementLoaded("#contents #titleArea", "html").then(() => {
@@ -430,6 +447,14 @@ if (allowedDomains.includes(domain)) {
             if (sessionStorage.getItem("logBoolean_c") !== null) {
               actionEvent.user.attributes.login_c = sessionStorage.getItem("logBoolean_c");
             }
+            // 자동로그인
+            if (sessionStorage.getItem("auto_login") !== null) {
+              actionEvent.user.attributes.auto_login = sessionStorage.getItem("auto_login");
+            }
+            // 일반로그인
+            if (sessionStorage.getItem("normal_login") !== null) {
+              actionEvent.user.attributes.normal_login = sessionStorage.getItem("normal_login");
+            }
             // 1500자 이상 여부 - chosun
             if (sessionStorage.getItem("moreThan1500") !== null) {
               actionEvent.user.attributes.moreThan1500 = sessionStorage.getItem("moreThan1500");
@@ -452,6 +477,9 @@ if (allowedDomains.includes(domain)) {
             // }
             if (sessionStorage.getItem("seriesTag") !== null) {
               actionEvent.user.attributes.seriesTag = sessionStorage.getItem("seriesTag");
+            }
+            if (sessionStorage.getItem("tagItem") !== null) {
+              actionEvent.user.attributes.tagItem = sessionStorage.getItem("tagItem");
             }
             if (series.length > 0) {
               actionEvent.user.attributes.series = "연재물";
@@ -537,6 +565,10 @@ if (allowedDomains.includes(domain)) {
           //         }
           //     }, 1500)
           // },
+          //   onActionEvent: (actionEvent) => {
+          //     actionEvent.user.attributes.hashTag = "test";
+          //     return actionEvent;
+          //   },
           interaction: {
             name: SalesforceInteractions.CatalogObjectInteractionName.ViewCatalogObject,
             catalogObject: {
@@ -610,6 +642,20 @@ if (allowedDomains.includes(domain)) {
             },
           },
           listeners: [
+            // SalesforceInteractions.listener("onload", ".tag-item", () =>{
+
+            //     const hashTag = SalesforceInteractions.cashDom(".tag-item").text();
+            //     SalesforceInteractions.sendEvent({
+            //         interaction:{
+            //             name:"hashTag"
+            //         },
+            //         user:{
+            //             attributes:{
+            //                 tagItem: hashTag
+            //             }
+            //         }
+            //     })
+            // }),
             // 최근 북마크한 기사 - chosun PC
             SalesforceInteractions.listener("click", "#bookmark-v", () => {
               console.log("북마크클릭");
