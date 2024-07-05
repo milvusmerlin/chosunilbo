@@ -26,8 +26,8 @@ if (typeof (SalesforceInteractions.mcis.FlickerDefender || {}).setRedisplayTimeo
 // const logSettime = setTimeout(()=> {
 const checkCookieExists = (name) => document.cookie.split(";").some((cookie) => cookie.trim().startsWith(`${name}=`));
 
-const cookie1Exists = checkCookieExists("ArcId.USER_INFO.session");
-const cookie2Exists = checkCookieExists("ArcId.USER_INFO");
+const cookie1Exists = checkCookieExists("ArcId.USER_INFO.session"); // 일반로그인
+const cookie2Exists = checkCookieExists("ArcId.USER_INFO"); // 자동로그인
 
 if (cookie1Exists || cookie2Exists) {
   sessionStorage.setItem("logBoolean_c", "Y");
@@ -37,14 +37,14 @@ if (cookie1Exists || cookie2Exists) {
 console.log(`로그인 상태 - ${sessionStorage.getItem("logBoolean_c")}`);
 
 if (cookie1Exists) {
-  sessionStorage.setItem("auto_login", "Y");
+  sessionStorage.setItem("normal_login", "Y");
 } else if (!cookie1Exists) {
-  sessionStorage.setItem("auto_login", "N");
+  sessionStorage.setItem("normal_login", "N");
 }
 if (cookie2Exists) {
-  sessionStorage.setItem("normal_login", "Y");
+  sessionStorage.setItem("auto_login", "Y");
 } else if (!cookie2Exists) {
-  sessionStorage.setItem("normal_login", "N");
+  sessionStorage.setItem("auto_login", "N");
 }
 // SalesforceInteractions.sendEvent({
 //     user: { attributes: { logBoolean_c: sessionStorage.getItem("logBoolean_c") } },
@@ -447,13 +447,13 @@ if (allowedDomains.includes(domain)) {
             if (sessionStorage.getItem("logBoolean_c") !== null) {
               actionEvent.user.attributes.login_c = sessionStorage.getItem("logBoolean_c");
             }
-            // 자동로그인
-            if (sessionStorage.getItem("auto_login") !== null) {
-              actionEvent.user.attributes.auto_login = sessionStorage.getItem("auto_login");
-            }
             // 일반로그인
             if (sessionStorage.getItem("normal_login") !== null) {
               actionEvent.user.attributes.normal_login = sessionStorage.getItem("normal_login");
+            }
+            // 자동로그인
+            if (sessionStorage.getItem("auto_login") !== null) {
+              actionEvent.user.attributes.auto_login = sessionStorage.getItem("auto_login");
             }
             // 1500자 이상 여부 - chosun
             if (sessionStorage.getItem("moreThan1500") !== null) {
