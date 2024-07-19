@@ -1,4 +1,4 @@
-console.log("코드 적용 확인 시간 240719_14:27");
+console.log("코드 적용 확인 시간 240719_15:43");
 if (typeof (SalesforceInteractions.mcis.FlickerDefender || {}).setPageMatchTimeout === "function") {
   SalesforceInteractions.mcis.FlickerDefender.setPageMatchTimeout(500);
 }
@@ -714,10 +714,18 @@ if (allowedDomains.includes(domain)) {
           listeners: [
             SalesforceInteractions.DisplayUtils.pageElementLoaded(".article-header__headline").then((e) => {
               if (window.location.href.includes("chosun.com/culture-life/")) {
-                console.log("문화 기사");
+                console.log("문화");
                 SalesforceInteractions.sendEvent({
                   interaction: {
                     name: "View culture-life article",
+                  },
+                });
+              }
+              if (window.location.href.includes("chosun.com/culture-life/art-gallery/")) {
+                console.log("문화 > 미술 전시");
+                SalesforceInteractions.sendEvent({
+                  interaction: {
+                    name: "View culture-life/art-gallery article",
                   },
                 });
               }
