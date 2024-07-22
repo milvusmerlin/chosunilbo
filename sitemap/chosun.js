@@ -1,4 +1,4 @@
-console.log("코드 적용 확인 시간 240719_15:43");
+console.log("코드 적용 확인 시간 240719_15:52");
 if (typeof (SalesforceInteractions.mcis.FlickerDefender || {}).setPageMatchTimeout === "function") {
   SalesforceInteractions.mcis.FlickerDefender.setPageMatchTimeout(500);
 }
@@ -606,24 +606,6 @@ if (allowedDomains.includes(domain)) {
                 resolve(true);
               });
             }),
-          // new Promise((resolve, reject) => {
-          //     setTimeout(()=>{
-          //         return SalesforceInteractions.DisplayUtils.pageElementLoaded("section.article-body", "html").then(() => {
-          //             resolve(true);
-          //         });
-          //     }, 1000)
-          // }),
-          // {
-          //     setTimeout(() => {
-          //         if (SalesforceInteractions.cashDom("section.article-body").length > 0) {
-          //             return true
-          //         }
-          //     }, 1500)
-          // },
-          //   onActionEvent: (actionEvent) => {
-          //     actionEvent.user.attributes.hashTag = "test";
-          //     return actionEvent;
-          //   },
           interaction: {
             name: SalesforceInteractions.CatalogObjectInteractionName.ViewCatalogObject,
             catalogObject: {
@@ -1338,6 +1320,9 @@ if (allowedDomains.includes(domain)) {
                 imageUrl: SalesforceInteractions.resolvers.fromSelectorAttribute(".prdImgView img", "src", (url) => {
                   return url;
                 }),
+                list_price: SalesforceInteractions.resolvers.fromSelector("#span_product_price_custom strike", (price) =>
+                  parseInt(price.replace(/[^0-9]/g, ""))
+                ),
                 price: SalesforceInteractions.resolvers.fromSelector("#span_product_price_text", (price) => parseInt(price.replace(/[^0-9]/g, ""))),
                 sku: {
                   id: () => SalesforceInteractions.cashDom("meta[property='product:productId']").attr("content"),
@@ -1472,6 +1457,7 @@ if (allowedDomains.includes(domain)) {
           ],
           contentZones: [
             { name: "[S11] recommendation_banner & first_purchase_banner", selector: "div#wrap" },
+            { name: "[S11] recommation_ein_banner", selector: "#container" },
             { name: "[S12] chosunmall_banner", selector: "#contents" },
             // { name: "[S11] first_purchase_banner", selector: "" },
             // { name: "[S11] recommendation_banner", selector: "" },
