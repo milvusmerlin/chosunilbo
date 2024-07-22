@@ -1,4 +1,4 @@
-console.log("코드 적용 확인 시간 240719_15:52");
+console.log("코드 적용 확인 시간 240719_20:15");
 if (typeof (SalesforceInteractions.mcis.FlickerDefender || {}).setPageMatchTimeout === "function") {
   SalesforceInteractions.mcis.FlickerDefender.setPageMatchTimeout(500);
 }
@@ -1033,6 +1033,18 @@ if (allowedDomains.includes(domain)) {
             { name: "쇼핑의맛 contentZone", selector: "#fusion-app" },
           ],
         },
+        {
+          name: "chosun_jeomsin",
+          isMatch: () => {
+            if (window.location.href === "https://www.chosun.com/jeomsin/") {
+              return true;
+            }
+          },
+          interaction: {
+            name: "chosun_jeomsin",
+          },
+          contentZones: [{ name: "운세의 맛 contentZone", selector: "#right-rail" }],
+        },
       ],
       pageTypeDefault: {
         name: "default",
@@ -1309,6 +1321,7 @@ if (allowedDomains.includes(domain)) {
                 resolve(true);
               });
             }),
+
           interaction: {
             name: SalesforceInteractions.CatalogObjectInteractionName.ViewCatalogObject,
             catalogObject: {
@@ -1317,10 +1330,7 @@ if (allowedDomains.includes(domain)) {
               attributes: {
                 name: SalesforceInteractions.resolvers.fromSelector("div.name"),
                 url: SalesforceInteractions.resolvers.fromHref(),
-                // imageUrl: SalesforceInteractions.resolvers.fromSelectorAttribute(".prdImgView img", "src", (url) => {
-                //     return url;
-                // }),
-                imageUrl: SalesforceInteractions.DisplayUtils.pageElementLoaded(".thumbnail > img.BigImage", "html").then((ele) => {
+                imageUrl: SalesforceInteractions.DisplayUtils.pageElementLoaded(".thumbnail > img", "html").then((ele) => {
                   return SalesforceInteractions.cashDom(ele).attr("src");
                 }),
                 listPrice: SalesforceInteractions.resolvers.fromSelector("#span_product_price_custom strike", (price) =>
