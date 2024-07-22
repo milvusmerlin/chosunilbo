@@ -1317,10 +1317,13 @@ if (allowedDomains.includes(domain)) {
               attributes: {
                 name: SalesforceInteractions.resolvers.fromSelector("div.name"),
                 url: SalesforceInteractions.resolvers.fromHref(),
-                imageUrl: SalesforceInteractions.resolvers.fromSelectorAttribute(".prdImgView img", "src", (url) => {
-                  return url;
+                // imageUrl: SalesforceInteractions.resolvers.fromSelectorAttribute(".prdImgView img", "src", (url) => {
+                //     return url;
+                // }),
+                imageUrl: SalesforceInteractions.DisplayUtils.pageElementLoaded(".thumbnail > img.BigImage", "html").then((ele) => {
+                  return SalesforceInteractions.cashDom(ele).attr("src");
                 }),
-                list_price: SalesforceInteractions.resolvers.fromSelector("#span_product_price_custom strike", (price) =>
+                listPrice: SalesforceInteractions.resolvers.fromSelector("#span_product_price_custom strike", (price) =>
                   parseInt(price.replace(/[^0-9]/g, ""))
                 ),
                 price: SalesforceInteractions.resolvers.fromSelector("#span_product_price_text", (price) => parseInt(price.replace(/[^0-9]/g, ""))),
